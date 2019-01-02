@@ -1,28 +1,59 @@
+import 'semantic-ui-css/semantic.min.css';
+
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
+
+import { obtainApiTokenSuccess } from './store/actions/apiTokenActions';
+import { readApiTokenFromLocalStorage } from './services/localStorage';
+
+// Pages
+import SignIn from './pages/SignIn';
+import Expenses from './pages/Expenses'
 
 class App extends Component {
-  render() {
+  componentWillMount() {
+    let apiToken = readApiTokenFromLocalStorage();
+    if (apiToken) {
+      this.props.obtainApiTokenSuccess(apiToken);
+    }
+  }
+
+  renderAppRouter() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/expenses" component={Expenses} />
+          <Route path="/incomes" component={Expenses}/>
+          <Route path="/exchange-rates" component={Expenses}/>
+          <Redirect to="/expenses"/>
+        </Switch>
+      </BrowserRouter>
+    );
+  }
+
+  render() {
+    const { loggedIn } = this.props;
+    return (
+      <Container>
+        { loggedIn ? this.renderAppRouter() : <SignIn /> }
+      </Container>
     );
   }
 }
 
-export default App;
+export default connect(
+  state => ({
+    loggedIn: state.apiToken && state.apiToken.loaded
+  }),
+  dispatch => bindActionCreators({
+    obtainApiTokenSuccess
+  }, dispatch)
+)(App);
