@@ -23,3 +23,28 @@ export function fetchExpensesFailure(body) {
     body
   };
 }
+
+export const CREATE_EXPENSE_REQUEST = 'CREATE_EXPENSE_REQUEST';
+export const CREATE_EXPENSE_SUCCESS = 'CREATE_EXPENSE_SUCCESS';
+export const CREATE_EXPENSE_FAILURE = 'CREATE_EXPENSE_FAILURE';
+
+export function createExpenseRequest(requestBody) {
+  return {
+    type: CREATE_EXPENSE_REQUEST,
+    body: requestBody
+  };
+}
+
+export function createExpenseSuccess(body) {
+  return {
+    type: CREATE_EXPENSE_SUCCESS,
+    body
+  };
+}
+
+export function createExpenseFailure(body) {
+  return {
+    type: CREATE_EXPENSE_FAILURE,
+    body
+  };
+}

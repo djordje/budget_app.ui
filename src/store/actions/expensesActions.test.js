@@ -4,7 +4,14 @@ import {
   FETCH_EXPENSES_FAILURE,
   fetchExpensesRequest,
   fetchExpensesSuccess,
-  fetchExpensesFailure
+  fetchExpensesFailure,
+
+  CREATE_EXPENSE_REQUEST,
+  CREATE_EXPENSE_SUCCESS,
+  CREATE_EXPENSE_FAILURE,
+  createExpenseRequest,
+  createExpenseSuccess,
+  createExpenseFailure
 } from './expensesActions';
 
 describe('fetchExpensesRequest', () => {
@@ -35,6 +42,39 @@ describe('fetchExpensesFailure', () => {
     const action = fetchExpensesFailure(response);
     expect(action).toEqual({
       type: FETCH_EXPENSES_FAILURE,
+      body: response
+    })
+  });
+});
+
+describe('createExpenseRequest', () => {
+  it('returns type and request body', () => {
+    const requestBody = {};
+    const action = createExpenseRequest(requestBody);
+    expect(action).toEqual({
+      type: CREATE_EXPENSE_REQUEST,
+      body: requestBody
+    });
+  });
+});
+
+describe('createExpenseSuccess', () => {
+  it('returns type and response body', () => {
+    const response = {};
+    const action = createExpenseSuccess(response);
+    expect(action).toEqual({
+      type: CREATE_EXPENSE_SUCCESS,
+      body: response
+    })
+  });
+});
+
+describe('createExpenseFailure', () => {
+  it('returns type and response body', () => {
+    const response = {};
+    const action = createExpenseFailure(response);
+    expect(action).toEqual({
+      type: CREATE_EXPENSE_FAILURE,
       body: response
     })
   });

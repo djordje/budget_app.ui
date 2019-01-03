@@ -1,7 +1,9 @@
 import {
   FETCH_EXPENSES_REQUEST,
   FETCH_EXPENSES_SUCCESS,
-  FETCH_EXPENSES_FAILURE
+  FETCH_EXPENSES_FAILURE,
+
+  CREATE_EXPENSE_SUCCESS
 } from '../actions/expensesActions';
 
 const initialState = {
@@ -13,11 +15,16 @@ const initialState = {
   totalPages: null
 };
 
+function parseDate(date) {
+  if (!date) return null;
+  return date.split('T')[0];
+}
+
 function expenseItem(expense) {
   return {
     id: expense.id,
     amount: expense.amount,
-    onDate: expense.on_date,
+    onDate: parseDate(expense.on_date),
     desc: expense.desc,
     currency: {
       id: expense.currency.id,
@@ -44,6 +51,9 @@ export default function expensesReducers(state = initialState, action) {
     };
   case FETCH_EXPENSES_FAILURE:
     return { ...state, loading: false };
+  case CREATE_EXPENSE_SUCCESS:
+    let expense = expenseItem(action.body);
+    return { ...state, data: [expense, ...state.data] };
   default:
     return state;
   }

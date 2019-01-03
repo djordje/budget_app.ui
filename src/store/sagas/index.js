@@ -5,7 +5,7 @@ import {
   watchRefreshApiTokenRequest
 } from './apiTokenSagas';
 import { watchFetchCurrenciesRequest } from './currenciesSagas';
-import { watchFetchExpensesRequest } from './expensesSagas';
+import { watchCreateExpenseRequest, watchFetchExpensesRequest } from './expensesSagas';
 
 export default function* rootSage() {
   yield all([
@@ -13,5 +13,6 @@ export default function* rootSage() {
     call(watchRefreshApiTokenRequest),
     call(watchFetchCurrenciesRequest),
     call(watchFetchExpensesRequest),
+    call(watchCreateExpenseRequest)
   ]);
 }

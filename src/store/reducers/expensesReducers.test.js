@@ -2,7 +2,7 @@ import expensesReducer from './expensesReducers';
 import {
   fetchExpensesSuccess,
   fetchExpensesFailure,
-  fetchExpensesRequest
+  fetchExpensesRequest, createExpenseSuccess
 } from '../actions/expensesActions';
 
 describe('expensesReducer', () => {
@@ -38,8 +38,8 @@ describe('expensesReducer', () => {
       .toEqual({
         loading: false,
         data: [
-          { id: 1, amount: 10.0, onDate: '2018-03-15T12:00:00:00.000Z', desc: 'example 1', currency: currencyResponse },
-          { id: 2, amount: 10.0, onDate: '2018-03-17T12:00:00:00.000Z', desc: 'example 2', currency: currencyResponse }
+          { id: 1, amount: 10.0, onDate: '2018-03-15', desc: 'example 1', currency: currencyResponse },
+          { id: 2, amount: 10.0, onDate: '2018-03-17', desc: 'example 2', currency: currencyResponse }
         ],
         pageNumber: 1,
         pageSize: 10,
@@ -53,6 +53,22 @@ describe('expensesReducer', () => {
     const currentState = { ...state, loading: true };
     expect(expensesReducer(currentState, action))
       .toEqual({ ...currentState, loading: false });
+  });
+
+  it('adds new item at the beginning of the list on CREATE_EXPENSE_SUCCESS', () => {
+    const action = createExpenseSuccess({
+      id: 2, amount: 10.0, on_date: '2018-03-17T12:00:00:00.000Z', desc: 'example 2', currency: currencyRequest
+    });
+    const currentState = { ...state, data: [
+      { id: 1, amount: 10.0, onDate: '2018-03-15', desc: 'example 1', currency: currencyResponse }
+    ] };
+    expect(expensesReducer(currentState, action))
+      .toEqual({
+        ...currentState, data: [
+          { id: 2, amount: 10.0, onDate: '2018-03-17', desc: 'example 2', currency: currencyResponse },
+          { id: 1, amount: 10.0, onDate: '2018-03-15', desc: 'example 1', currency: currencyResponse }
+        ]
+      });
   });
 
   it('returns state unless action type has been recognized', () => {
