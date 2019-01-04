@@ -2,7 +2,7 @@ import { call, put, select, takeEvery } from 'redux-saga/effects';
 import * as expensesSagas from './expensesSagas';
 import {
   getPaginatedExpenses,
-  createExpense as createExpenseAPI
+  createExpense
 } from '../../services/http/budgetAppAPI/requests/expenses';
 import {
   fetchExpensesSuccess,
@@ -11,7 +11,6 @@ import {
   CREATE_EXPENSE_REQUEST, createExpenseFailure, createExpenseSuccess
 } from '../actions/expensesActions';
 import { getApiToken } from '../selectors/apiTokenSelector';
-import { createExpense } from './expensesSagas';
 
 describe('expensesSagas', () => {
   describe('fetchExpenses', () => {
@@ -97,7 +96,7 @@ describe('expensesSagas', () => {
     it('calls api request', () => {
       const apiToken = { accessToken: token };
       expect(generator.next(apiToken).value).toEqual(
-        call(createExpenseAPI, token, {
+        call(createExpense, token, {
           expense: {
             on_date: new Date('1970-01-01'),
             currency_id: null,
