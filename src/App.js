@@ -5,11 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   BrowserRouter,
+  NavLink,
   Route,
   Switch,
   Redirect
 } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
+import { Container, Menu } from 'semantic-ui-react';
 
 import { obtainApiTokenSuccess } from './store/actions/apiTokenActions';
 import { readApiTokenFromLocalStorage } from './services/localStorage';
@@ -29,12 +30,19 @@ class App extends Component {
   renderAppRouter() {
     return (
       <BrowserRouter>
-        <Switch>
-          <Route path="/expenses" component={Expenses} />
-          <Route path="/incomes" component={Expenses}/>
-          <Route path="/exchange-rates" component={Expenses}/>
-          <Redirect to="/expenses"/>
-        </Switch>
+        <div style={ { marginTop: '10px' } }>
+          <Menu>
+            <Menu.Item as={NavLink} to="/expenses" name="Expenses"/>
+            <Menu.Item as={NavLink} to="/incomes" name="Incomes"/>
+            <Menu.Item as={NavLink} to="/exchange-rates" name="Exchange rates"/>
+          </Menu>
+          <Switch>
+            <Route path="/expenses" component={Expenses} />
+            <Route path="/incomes" component={Expenses}/>
+            <Route path="/exchange-rates" component={Expenses}/>
+            <Redirect to="/expenses"/>
+          </Switch>
+        </div>
       </BrowserRouter>
     );
   }
