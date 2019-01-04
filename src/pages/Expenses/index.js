@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchExpensesRequest } from '../../store/actions/expensesActions';
+import { fetchExpensesRequest, createExpenseRequest } from '../../store/actions/expensesActions';
 import Expenses from './Expenses';
 
 export default connect(
@@ -8,6 +8,7 @@ export default connect(
     expenses: state.expenses
   }),
   dispatch => bindActionCreators({
-    fetchExpensesRequest
+    fetchExpensesRequest,
+    createExpenseRequest
   }, dispatch)
 )(Expenses);
