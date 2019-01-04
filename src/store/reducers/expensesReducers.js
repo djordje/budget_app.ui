@@ -52,7 +52,7 @@ export default function expensesReducers(state = initialState, action) {
   case FETCH_EXPENSES_FAILURE:
     return { ...state, loading: false };
   case CREATE_EXPENSE_SUCCESS:
-    let expense = expenseItem(action.body);
+    let expense = expenseItem(action.body.data);
     return { ...state, data: [expense, ...state.data] };
   default:
     return state;

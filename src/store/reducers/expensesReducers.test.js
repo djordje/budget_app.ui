@@ -57,7 +57,9 @@ describe('expensesReducer', () => {
 
   it('adds new item at the beginning of the list on CREATE_EXPENSE_SUCCESS', () => {
     const action = createExpenseSuccess({
-      id: 2, amount: 10.0, on_date: '2018-03-17T12:00:00:00.000Z', desc: 'example 2', currency: currencyRequest
+      data: {
+        id: 2, amount: 10.0, on_date: '2018-03-17T12:00:00:00.000Z', desc: 'example 2', currency: currencyRequest
+      }
     });
     const currentState = { ...state, data: [
       { id: 1, amount: 10.0, onDate: '2018-03-15', desc: 'example 1', currency: currencyResponse }
