@@ -6,6 +6,22 @@ import {
   refreshApiTokenRequest
 } from '../actions/apiTokenActions';
 
+/**
+ * Creates saga generator function that will handle:
+ *   - Selecting apiToken from the store and using access and refresh tokens
+ *   - Waiting for apiToken to be loaded
+ *   - Executing `apiCallFn` function and passing params returned by `extractParamsFromActionFn`
+ *   - Calling `successActionFn` with response.data
+ *   - In case of error with status 401 this saga handles token refreshing and retrying call, unless retry has been disabled
+ *   - Calling `failureActionFn` with `e.response.data`
+ *
+ * @param {Function} apiCallFn - function that wraps async call to the API
+ * @param {Function} extractParamsFromActionFn - receives action and must return array which will be passed to apiCallFn
+ * @param {Function} successActionFn - store action creator function
+ * @param {Function} failureActionFn - store action creator function
+ * @param {Boolean} retry
+ * @return {GeneratorFunction}
+ */
 export function generateProtectedApiCallSaga(apiCallFn, extractParamsFromActionFn, successActionFn, failureActionFn, retry = true) {
   return function* protectedApiCallSaga(action, r = retry) {
     let apiToken;
