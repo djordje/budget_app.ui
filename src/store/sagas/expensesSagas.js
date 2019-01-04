@@ -1,4 +1,4 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 import {
   FETCH_EXPENSES_REQUEST,
   fetchExpensesSuccess,
@@ -12,41 +12,34 @@ import {
   getPaginatedExpenses,
   createExpense as createExpenseAPI
 } from '../../services/http/budgetAppAPI/requests/expenses';
-import { getApiToken } from '../selectors/apiTokenSelector';
+import { generateProtectedApiCallSaga } from '../utils/protectedApiCallSaga';
 
-export function* fetchExpenses(action) {
-  const { page = 1, perPage = 10 } = action;
-  const { accessToken } = yield select(getApiToken);
-  try {
-    const response = yield call(getPaginatedExpenses, accessToken, page, perPage);
-    yield put(fetchExpensesSuccess(response.data));
-  } catch(e) {
-    yield put(fetchExpensesFailure(e.response.data));
-  }
-}
+export const fetchExpenses = generateProtectedApiCallSaga(
+  getPaginatedExpenses,
+  action => ([action.page, action.perPage]),
+  fetchExpensesSuccess,
+  fetchExpensesFailure
+);
 
 export function* watchFetchExpensesRequest() {
   yield takeEvery(FETCH_EXPENSES_REQUEST, fetchExpenses);
 }
 
-export function* createExpense(action) {
-  const { body } = action;
-  const requestBody = {
-    expense: {
-      on_date: new Date(body.onDate || null),
-      currency_id: body.currencyId || null,
-      amount: body.amount || null,
-      desc: body.desc || null
+export const createExpense = generateProtectedApiCallSaga(
+  createExpenseAPI,
+  action => ([
+    {
+      expense: {
+        on_date: new Date(action.body.onDate || null),
+        currency_id: action.body.currencyId || null,
+        amount: action.body.amount || null,
+        desc: action.body.desc || null
+      }
     }
-  };
-  const { accessToken } = yield select(getApiToken);
-  try {
-    const response = yield call(createExpenseAPI, accessToken, requestBody);
-    yield put(createExpenseSuccess(response.data.data));
-  } catch (e) {
-    yield put(createExpenseFailure(e.response.data));
-  }
-}
+  ]),
+  createExpenseSuccess,
+  createExpenseFailure
+);
 
 export function* watchCreateExpenseRequest() {
   yield takeEvery(CREATE_EXPENSE_REQUEST, createExpense);
