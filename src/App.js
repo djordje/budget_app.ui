@@ -17,7 +17,8 @@ import { readApiTokenFromLocalStorage } from './services/localStorage';
 
 // Pages
 import SignIn from './pages/SignIn';
-import Expenses from './pages/Expenses'
+import Expenses from './pages/Expenses';
+import Incomes from './pages/Incomes';
 
 class App extends Component {
   componentWillMount() {
@@ -38,7 +39,7 @@ class App extends Component {
           </Menu>
           <Switch>
             <Route path="/expenses" component={Expenses} />
-            <Route path="/incomes" component={Expenses}/>
+            <Route path="/incomes" component={Incomes}/>
             <Route path="/exchange-rates" component={Expenses}/>
             <Redirect to="/expenses"/>
           </Switch>
