@@ -23,3 +23,28 @@ export function fetchIncomesFailure(body) {
     body
   };
 }
+
+export const CREATE_INCOME_REQUEST = 'CREATE_INCOME_REQUEST';
+export const CREATE_INCOME_SUCCESS = 'CREATE_INCOME_SUCCESS';
+export const CREATE_INCOME_FAILURE = 'CREATE_INCOME_FAILURE';
+
+export function createIncomeRequest(requestBody) {
+  return {
+    type: CREATE_INCOME_REQUEST,
+    body: requestBody
+  };
+}
+
+export function createIncomeSuccess(body) {
+  return {
+    type: CREATE_INCOME_SUCCESS,
+    body
+  };
+}
+
+export function createIncomeFailure(body) {
+  return {
+    type: CREATE_INCOME_FAILURE,
+    body
+  };
+}

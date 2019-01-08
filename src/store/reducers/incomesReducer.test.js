@@ -1,5 +1,10 @@
 import incomesReducer from './incomesReducer';
-import { fetchIncomesFailure, fetchIncomesRequest, fetchIncomesSuccess } from '../actions/incomesActions';
+import {
+  createIncomeSuccess,
+  fetchIncomesFailure,
+  fetchIncomesRequest,
+  fetchIncomesSuccess
+} from '../actions/incomesActions';
 
 describe('incomesReducer', () => {
   describe('FETCH_INCOMES_REQUEST', () => {
@@ -77,6 +82,64 @@ describe('incomesReducer', () => {
       const action = fetchIncomesFailure({});
       expect(incomesReducer(state, action)).toEqual({
         loading: false
+      });
+    });
+  });
+
+  describe('CREATE_INCOME_SUCCESS', () => {
+    it('adds item at the beginning of the list', () => {
+      const existingItem = {
+        id: 1,
+        amount: 10.0,
+        forDate: '2019-01-05',
+        onDate: '2019-01-05',
+        desc: 'Test desc',
+        currency: {
+          id: 1,
+          isoCode: 'RSD',
+          name: 'Serbian dinar'
+        }
+      };
+      const state = {
+        loading: false,
+        data: [existingItem],
+        pageNumber: 1,
+        pageSize: 10,
+        totalEntries: 1,
+        totalPages: 1
+      };
+      const newItemRaw = {
+        id: 2,
+        amount: 12.0,
+        for_date: '2019-01-06',
+        on_date: '2019-01-06',
+        desc: 'Test desc',
+        currency: {
+          id: 1,
+          iso_code: 'RSD',
+          name: 'Serbian dinar'
+        }
+      };
+      const newItemCamelCase = {
+        id: 2,
+        amount: 12.0,
+        forDate: '2019-01-06',
+        onDate: '2019-01-06',
+        desc: 'Test desc',
+        currency: {
+          id: 1,
+          isoCode: 'RSD',
+          name: 'Serbian dinar'
+        }
+      };
+      const action = createIncomeSuccess({ data: newItemRaw });
+      expect(incomesReducer(state, action)).toEqual({
+        loading: false,
+        data: [newItemCamelCase, existingItem],
+        pageNumber: 1,
+        pageSize: 10,
+        totalEntries: 1,
+        totalPages: 1
       });
     });
   });

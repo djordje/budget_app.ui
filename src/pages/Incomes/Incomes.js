@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Table } from 'semantic-ui-react';
+import AddIncomeFormModal from '../../components/AddIncomeForm/Modal';
 
 class Incomes extends React.Component {
   static propTypes = {
@@ -31,6 +32,7 @@ class Incomes extends React.Component {
     const rows = this.props.incomes.data.map(this.renderIncome);
     return (
       <div>
+        <AddIncomeFormModal onSubmit={this.props.createIncomeRequest}/>
         <Table celled>
           <Table.Header>
             <Table.Row>

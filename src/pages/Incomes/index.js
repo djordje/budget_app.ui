@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchIncomesRequest } from '../../store/actions/incomesActions';
+import { createIncomeRequest, fetchIncomesRequest } from '../../store/actions/incomesActions';
 import Incomes from './Incomes';
 
 const IncomesConnected = connect(
@@ -8,7 +8,8 @@ const IncomesConnected = connect(
     incomes: state.incomes
   }),
   dispatch => bindActionCreators({
-    fetchIncomesRequest
+    fetchIncomesRequest,
+    createIncomeRequest
   }, dispatch)
 )(Incomes);
 

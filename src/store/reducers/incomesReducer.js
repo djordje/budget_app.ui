@@ -1,4 +1,9 @@
-import { FETCH_INCOMES_FAILURE, FETCH_INCOMES_REQUEST, FETCH_INCOMES_SUCCESS } from '../actions/incomesActions';
+import {
+  CREATE_INCOME_SUCCESS,
+  FETCH_INCOMES_FAILURE,
+  FETCH_INCOMES_REQUEST,
+  FETCH_INCOMES_SUCCESS
+} from '../actions/incomesActions';
 
 export const initialState = {
   loading: false,
@@ -46,6 +51,9 @@ export default function incomesReducer(state = initialState, action) {
     };
   case FETCH_INCOMES_FAILURE:
     return { ...state, loading: false };
+  case CREATE_INCOME_SUCCESS:
+    let income = incomeItem(action.body.data);
+    return { ...state, data: [income, ...state.data] };
   default:
     return state;
   }
